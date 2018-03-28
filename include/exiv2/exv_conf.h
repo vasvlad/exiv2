@@ -44,7 +44,8 @@
 /* #undef EXV_ENABLE_WEBREADY */
 
 /* Define to 1 if you have the `iconv' function. */
-#undef EXV_HAVE_ICONV
+//#undef EXV_HAVE_ICONV
+#define EXV_HAVE_ICONV 1
 
 /* Define to `const' or to empty, depending on the second argument of `iconv'. */
 #define EXV_ICONV_CONST 

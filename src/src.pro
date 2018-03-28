@@ -1,4 +1,4 @@
-TEMPLATE = lib 
+TEMPLATE = lib
 QT += core
 TARGET = exiv2
 
@@ -6,13 +6,19 @@ TARGET = exiv2
 #CONFIG += c++14 
 
 
-android {
-    QT += androidextras
-}
+#LIBS += -ldl
 CONFIG += staticlib
 INCLUDEPATH += ../include/exiv2
 INCLUDEPATH += ../include
 INCLUDEPATH += config
+android {
+    QT += androidextras
+    INCLUDEPATH += ../include_android
+}
+
+linux:!android {
+    INCLUDEPATH += /usr/include
+}
 SOURCES += exiv2.cpp \
            utils.cpp \
            exif.cpp \
