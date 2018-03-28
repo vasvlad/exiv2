@@ -133,7 +133,7 @@
 #define EXV_HAVE_SYS_MMAN_H 1
 
 /* Define to 1 if you have the `zlib' library. */
-#define EXV_HAVE_LIBZ 1
+#undef EXV_HAVE_LIBZ
 
 /* Define to 1 if you have the Adobe XMP Toolkit. */
 #undef EXV_HAVE_XMP_TOOLKIT 

@@ -8,6 +8,13 @@
 
 #include <cassert>
 
+#ifdef ANDROID
+#include <time64.h>
+// Android has only timegm64() and no timegm().
+inline time_t timegm(struct tm* const tmp) {
+  return static_cast<time_t>(timegm64(tmp));
+}
+#endif
 // *****************************************************************************
 // local declarations
 namespace {
