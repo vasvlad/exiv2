@@ -254,17 +254,13 @@ void Exiv2::dumpLibraryInfo(std::ostream& os,const exv_grep_keys_t& keys)
     int have_lensdata    =0;
     int have_iconv       =0;
     int have_memory      =0;
-    int have_memset      =0;
     int have_lstat       =0;
     int have_stdbool     =0;
     int have_stdint      =0;
     int have_stdlib      =0;
     int have_strlib      =0;
-    int have_strchr      =0;
-    int have_strerror    =0;
     int have_strerror_r  =0;
     int have_strings_h   =0;
-    int have_strtol      =0;
     int have_mmap        =0;
     int have_munmap      =0;
     int have_sys_stat    =0;
@@ -313,10 +309,6 @@ void Exiv2::dumpLibraryInfo(std::ostream& os,const exv_grep_keys_t& keys)
     have_memory=1;
 #endif
 
-#ifdef EXV_HAVE_MEMSET
-    have_memset=1;
-#endif
-
 #ifdef EXV_HAVE_LSTAT
     have_lstat=1;
 #endif
@@ -333,24 +325,12 @@ void Exiv2::dumpLibraryInfo(std::ostream& os,const exv_grep_keys_t& keys)
     have_stdlib=1;
 #endif
 
-#ifdef EXV_HAVE_STRCHR
-    have_strchr=1;
-#endif
-
-#ifdef EXV_HAVE_STRERROR
-    have_strerror=1;
-#endif
-
 #ifdef EXV_HAVE_STRERROR_R
     have_strerror_r=1;
 #endif
 
 #ifdef EXV_HAVE_STRINGS_H
     have_strings=1;
-#endif
-
-#ifdef EXV_HAVE_STRTOL
-    have_strtol=1;
 #endif
 
 #ifdef EXV_HAVE_MMAP
@@ -510,17 +490,13 @@ void Exiv2::dumpLibraryInfo(std::ostream& os,const exv_grep_keys_t& keys)
     output(os,keys,"have_lensdata"     ,have_lensdata    );
     output(os,keys,"have_iconv"        ,have_iconv       );
     output(os,keys,"have_memory"       ,have_memory      );
-    output(os,keys,"have_memset"       ,have_memset      );
     output(os,keys,"have_lstat"        ,have_lstat       );
     output(os,keys,"have_stdbool"      ,have_stdbool     );
     output(os,keys,"have_stdint"       ,have_stdint      );
     output(os,keys,"have_stdlib"       ,have_stdlib      );
     output(os,keys,"have_strlib"       ,have_strlib      );
-    output(os,keys,"have_strchr"       ,have_strchr      );
-    output(os,keys,"have_strerror"     ,have_strerror    );
     output(os,keys,"have_strerror_r"   ,have_strerror_r  );
     output(os,keys,"have_strings_h"    ,have_strings_h   );
-    output(os,keys,"have_strtol"       ,have_strtol      );
     output(os,keys,"have_mmap"         ,have_mmap        );
     output(os,keys,"have_munmap"       ,have_munmap      );
     output(os,keys,"have_sys_stat"     ,have_sys_stat    );

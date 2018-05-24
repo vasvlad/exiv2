@@ -289,6 +289,7 @@ namespace Exiv2 {
         { (long int)0x3940000, "EOS M5" },
         { (long int)0x3950000, "PowerShot G5 X" },
         { (long int)0x3970000, "PowerShot G7 X Mark II" },
+        { (long int)0x3980000, "EOS M100" },
         { (long int)0x3990000, "PowerShot ELPH 360 HS / IXUS 285 HS / IXY 650" },
         { (long int)0x4010000, "PowerShot SX540 HS" },
         { (long int)0x4020000, "PowerShot SX420 IS" },
@@ -1770,9 +1771,13 @@ namespace Exiv2 {
     {
         try {
             // 1140
-            if( metadata->findKey(ExifKey("Exif.Image.Model"        ))->value().toString() == "Canon EOS 30D"
-            &&  metadata->findKey(ExifKey("Exif.CanonCs.Lens"       ))->value().toString() == "24 24 1"
-            &&  metadata->findKey(ExifKey("Exif.CanonCs.MaxAperture"))->value().toString() == "95" // F2.8
+            const ExifData::const_iterator itModel = metadata->findKey(ExifKey("Exif.Image.Model"));
+            const ExifData::const_iterator itLens  = metadata->findKey(ExifKey("Exif.CanonCs.Lens"));
+            const ExifData::const_iterator itApert = metadata->findKey(ExifKey("Exif.CanonCs.MaxAperture"));
+
+            if( itModel != metadata->end() && itModel->value().toString() == "Canon EOS 30D"
+            &&  itLens  != metadata->end() && itLens->value().toString() == "24 24 1"
+            &&  itApert != metadata->end() && itApert->value().toString() == "95" // F2.8
             ){
                 return os << "Canon EF-S 24mm f/2.8 STM" ;
             }

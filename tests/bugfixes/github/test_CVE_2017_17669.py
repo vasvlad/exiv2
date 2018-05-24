@@ -3,14 +3,16 @@
 import system_tests
 
 
-class RunPocFile(system_tests.Case):
+class TestCvePoC(metaclass=system_tests.CaseMeta):
 
-    filename = "{data_path}/issue_187"
-    commands = ["{exiv2} " + filename]
+    url = "https://github.com/Exiv2/exiv2/issues/187"
+
+    filename = "$data_path/issue_187"
+    commands = ["$exiv2 " + filename]
     retval = [1]
     stdout = [""]
     stderr = [
-	"""{exiv2_exception_msg} """ + filename + """:
-{kerFailedToReadImageData}
+	"""$exiv2_exception_message """ + filename + """:
+$kerFailedToReadImageData
 """
     ]

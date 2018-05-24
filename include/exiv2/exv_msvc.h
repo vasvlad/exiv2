@@ -14,10 +14,6 @@
 /* Define to 1 if you have the `alarm' function. */
 /* #undef EXV_HAVE_ALARM */
 
-/* Define to 1 if you have the declaration of `strerror_r', and to 0 if you
-   don't. */
-/* #undef EXV_HAVE_DECL_STRERROR_R */
-
 /* Define to 1 if you have the `gmtime_r' function. */
 /* #undef EXV_HAVE_GMTIME_R */
 
@@ -72,9 +68,6 @@
 /* Define to 1 if you have the <memory.h> header file. */
 /* #undef EXV_HAVE_MEMORY_H */
 
-/* Define to 1 if you have the `memset' function. */
-#define EXV_HAVE_MEMSET 1
-
 /* Define to 1 if your system has a GNU libc compatible `realloc' function,
    and to 0 otherwise. */
 #define EXV_HAVE_REALLOC 1
@@ -88,12 +81,6 @@
 /* Define to 1 if you have the <stdlib.h> header file. */
 /* #undef EXV_HAVE_STDLIB_H */
 
-/* Define to 1 if you have the `strchr' function. */
-#define EXV_HAVE_STRCHR 1
-
-/* Define to 1 if you have the `strerror' function. */
-#define EXV_HAVE_STRERROR 1
-
 /* Define to 1 if you have the `strerror_r' function. */
 /* #undef EXV_HAVE_STRERROR_R */
 
@@ -102,9 +89,6 @@
 
 /* Define to 1 if you have the <string.h> header file. */
 /* #undef EXV_HAVE_STRING_H */
-
-/* Define to 1 if you have the `strtol' function. */
-#define EXV_HAVE_STRTOL 1
 
 /* Define to 1 if you have the `mmap' function. */
 /* #undef EXV_HAVE_MMAP */

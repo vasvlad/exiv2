@@ -32,6 +32,7 @@
 
 #include "webpimage.hpp"
 #include "image_int.hpp"
+#include "enforce.hpp"
 #include "futils.hpp"
 #include "basicio.hpp"
 #include "tags.hpp"
@@ -344,7 +345,7 @@ namespace Exiv2 {
                     if (outIo.write((const byte*)WEBP_CHUNK_HEADER_ICCP, WEBP_TAG_SIZE) != WEBP_TAG_SIZE) throw Error(kerImageWriteFailed);
                     ul2Data(data, (uint32_t) iccProfile_.size_, littleEndian);
                     if (outIo.write(data, WEBP_TAG_SIZE) != WEBP_TAG_SIZE) throw Error(kerImageWriteFailed);
-                    if (outIo.write(iccProfile_.pData_, (long)iccProfile_.size_) != (long)iccProfile_.size_) {
+                    if (outIo.write(iccProfile_.pData_, iccProfile_.size_) != iccProfile_.size_) {
                         throw Error(kerImageWriteFailed);
                     }
                     has_icc = false;
@@ -490,7 +491,9 @@ namespace Exiv2 {
 
         io_->read(data, WEBP_TAG_SIZE * 3);
 
-        WebPImage::decodeChunks(Exiv2::getULong(data + WEBP_TAG_SIZE, littleEndian) + 12);
+        const uint32_t filesize = Exiv2::getULong(data + WEBP_TAG_SIZE, littleEndian) + 8;
+        enforce(filesize <= io_->size(), Exiv2::kerCorruptedMetadata);
+        WebPImage::decodeChunks(filesize);
 
     } // WebPImage::readMetadata
 
@@ -508,7 +511,8 @@ namespace Exiv2 {
         while ( !io_->eof() && (uint64_t) io_->tell() < filesize) {
             io_->read(chunkId.pData_, WEBP_TAG_SIZE);
             io_->read(size_buff, WEBP_TAG_SIZE);
-            long size = Exiv2::getULong(size_buff, littleEndian);
+            const uint32_t size = Exiv2::getULong(size_buff, littleEndian);
+            enforce(size <= (filesize - io_->tell()), Exiv2::kerCorruptedMetadata);
 
             DataBuf payload(size);
 
@@ -593,21 +597,21 @@ namespace Exiv2 {
                 bool  be_header = false;
                 long  pos = -1;
 
-                pos = getHeaderOffset (payload.pData_, (long)payload.size_, (byte*)&exifLongHeader, 4);
+                pos = getHeaderOffset (payload.pData_, payload.size_, (byte*)&exifLongHeader, 4);
                 if (pos == -1) {
-                    pos = getHeaderOffset (payload.pData_, (long)payload.size_, (byte*)&exifLongHeader, 6);
+                    pos = getHeaderOffset (payload.pData_, payload.size_, (byte*)&exifLongHeader, 6);
                     if (pos != -1) {
                         s_header = true;
                     }
                 }
                 if (pos == -1) {
-                    pos = getHeaderOffset (payload.pData_, (long)payload.size_, (byte*)&exifTiffLEHeader, 3);
+                    pos = getHeaderOffset (payload.pData_, payload.size_, (byte*)&exifTiffLEHeader, 3);
                     if (pos != -1) {
                         le_header = true;
                     }
                 }
                 if (pos == -1) {
-                    pos = getHeaderOffset (payload.pData_, (long)payload.size_, (byte*)&exifTiffBEHeader, 4);
+                    pos = getHeaderOffset (payload.pData_, payload.size_, (byte*)&exifTiffBEHeader, 4);
                     if (pos != -1) {
                         be_header = true;
                     }
@@ -620,7 +624,7 @@ namespace Exiv2 {
                     offset += 12;
                 }
 
-                long size = payload.size_ + offset;
+                const long size = payload.size_ + offset;
                 rawExifData = (byte*)malloc(size);
 
                 if (s_header) {
@@ -636,7 +640,7 @@ namespace Exiv2 {
                     memcpy(rawExifData + 6, (char*)&exifShortHeader, 6);
                 }
 
-                memcpy(rawExifData + offset, payload.pData_, (long)payload.size_);
+                memcpy(rawExifData + offset, payload.pData_, payload.size_);
 
 #ifdef DEBUG
                 std::cout << "Display Hex Dump [size:" << (unsigned long)size << "]" << std::endl;

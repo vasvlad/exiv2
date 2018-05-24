@@ -977,11 +977,10 @@ namespace Exiv2 {
         // sprintf wants to add the null terminator, so use oversized buffer
         char temp[9];
 
-        int wrote = sprintf(temp, "%04d%02d%02d",
-                            date_.year, date_.month, date_.day);
+        int wrote = sprintf(temp, "%04d%02d%02d", date_.year, date_.month, date_.day);
         assert(wrote == 8);
-        std::memcpy(buf, temp, 8);
-        return 8;
+        std::memcpy(buf, temp, wrote);
+        return wrote;
     }
 
     const DateValue::Date& DateValue::getDate() const
@@ -1152,14 +1151,14 @@ namespace Exiv2 {
         char plusMinus = '+';
         if (time_.tzHour < 0 || time_.tzMinute < 0) plusMinus = '-';
 
-        int wrote = sprintf(temp,
+        const int wrote = sprintf(temp,
                    "%02d%02d%02d%1c%02d%02d",
                    time_.hour, time_.minute, time_.second,
                    plusMinus, abs(time_.tzHour), abs(time_.tzMinute));
 
         assert(wrote == 11);
-        std::memcpy(buf, temp, 11);
-        return 11;
+        std::memcpy(buf, temp, wrote);
+        return wrote;
     }
 
     const TimeValue::Time& TimeValue::getTime() const

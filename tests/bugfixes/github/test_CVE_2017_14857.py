@@ -3,13 +3,15 @@
 import system_tests
 
 
-class CVE_2017_14857(system_tests.Case):
+class TestCvePoC(metaclass=system_tests.CaseMeta):
 
-    filename = "{data_path}/010_bad_free"
-    commands = ["{exiv2} " + filename]
+    url = "https://github.com/Exiv2/exiv2/issues/76"
+
+    filename = "$data_path/010_bad_free"
+    commands = ["$exiv2 " + filename]
     retval = [1]
     stdout = [""]
     stderr = [
-        """{exiv2_exception_msg} """ + filename + """:
-{kerInvalidMalloc}
+        """$exiv2_exception_message """ + filename + """:
+$kerInvalidMalloc
 """]

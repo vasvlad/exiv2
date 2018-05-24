@@ -2627,9 +2627,9 @@ namespace Exiv2 {
         const XmpPropertyInfo* pl = propertyList(prefix);
         if (!pl) return 0;
         const XmpPropertyInfo* pi = 0;
-        for (int i = 0; pl[i].name_ != 0; ++i) {
-            if (0 == strcmp(pl[i].name_, property.c_str())) {
-                pi = pl + i;
+        for (int j = 0; pl[j].name_ != 0; ++j) {
+            if (0 == strcmp(pl[j].name_, property.c_str())) {
+                pi = pl + j;
                 break;
             }
         }
@@ -2693,9 +2693,12 @@ namespace Exiv2 {
     }
 
     //! @brief Internal Pimpl structure with private members and data of class XmpKey.
-    struct XmpKey::Impl {
-        Impl() {}                       //!< Default constructor
-        Impl(const std::string& prefix, const std::string& property); //!< Constructor
+    struct XmpKey::Impl
+    {
+        Impl()
+        {
+        }                                                              //!< Default constructor
+        Impl(const std::string& prefix, const std::string& property);  //!< Constructor
 
         /*!
           @brief Parse and convert the \em key string into property and prefix.
@@ -2704,20 +2707,21 @@ namespace Exiv2 {
 
           @throw Error if the key cannot be decomposed.
         */
-        void decomposeKey(const std::string& key); //!< Misterious magic
+        void decomposeKey(const std::string& key);  //!< Misterious magic
 
         // DATA
-        static const char* familyName_; //!< "Xmp"
+        static const char* familyName_;  //!< "Xmp"
 
-        std::string prefix_;            //!< Prefix
-        std::string property_;          //!< Property name
+        std::string prefix_;    //!< Prefix
+        std::string property_;  //!< Property name
     };
 
     //! @brief Constructor for Internal Pimpl structure XmpKey::Impl::Impl
     XmpKey::Impl::Impl(const std::string& prefix, const std::string& property)
     {
         // Validate prefix
-        if (XmpProperties::ns(prefix).empty()) throw Error(kerNoNamespaceForPrefix, prefix);
+        if (XmpProperties::ns(prefix).empty())
+            throw Error(kerNoNamespaceForPrefix, prefix);
 
         property_ = property;
         prefix_ = prefix;
@@ -2725,30 +2729,27 @@ namespace Exiv2 {
 
     const char* XmpKey::Impl::familyName_ = "Xmp";
 
-    XmpKey::XmpKey(const std::string& key)
-        : p_(new Impl)
+    XmpKey::XmpKey(const std::string& key) : p_(new Impl)
     {
         p_->decomposeKey(key);
     }
 
-    XmpKey::XmpKey(const std::string& prefix, const std::string& property)
-        : p_(new Impl(prefix, property))
+    XmpKey::XmpKey(const std::string& prefix, const std::string& property) : p_(new Impl(prefix, property))
     {
     }
 
     XmpKey::~XmpKey()
     {
-        delete p_;
     }
 
-    XmpKey::XmpKey(const XmpKey& rhs)
-        : Key(rhs), p_(new Impl(*rhs.p_))
+    XmpKey::XmpKey(const XmpKey& rhs) : Key(rhs), p_(new Impl(*rhs.p_))
     {
     }
 
     XmpKey& XmpKey::operator=(const XmpKey& rhs)
     {
-        if (this == &rhs) return *this;
+        if (this == &rhs)
+            return *this;
         Key::operator=(rhs);
         *p_ = *rhs.p_;
         return *this;
@@ -2787,7 +2788,8 @@ namespace Exiv2 {
     std::string XmpKey::tagLabel() const
     {
         const char* pt = XmpProperties::propertyTitle(*this);
-        if (!pt) return tagName();
+        if (!pt)
+            return tagName();
         return pt;
     }
 
@@ -2806,25 +2808,34 @@ namespace Exiv2 {
     {
         // Get the family name, prefix and property name parts of the key
         std::string::size_type pos1 = key.find('.');
-        if (pos1 == std::string::npos) throw Error(kerInvalidKey, key);
+        if (pos1 == std::string::npos) {
+            throw Error(kerInvalidKey, key);
+        }
         std::string familyName = key.substr(0, pos1);
         if (0 != strcmp(familyName.c_str(), familyName_)) {
             throw Error(kerInvalidKey, key);
         }
         std::string::size_type pos0 = pos1 + 1;
         pos1 = key.find('.', pos0);
-        if (pos1 == std::string::npos) throw Error(kerInvalidKey, key);
+        if (pos1 == std::string::npos) {
+            throw Error(kerInvalidKey, key);
+        }
         std::string prefix = key.substr(pos0, pos1 - pos0);
-        if (prefix == "") throw Error(kerInvalidKey, key);
+        if (prefix == "") {
+            throw Error(kerInvalidKey, key);
+        }
         std::string property = key.substr(pos1 + 1);
-        if (property == "") throw Error(kerInvalidKey, key);
+        if (property == "") {
+            throw Error(kerInvalidKey, key);
+        }
 
         // Validate prefix
-        if (XmpProperties::ns(prefix).empty()) throw Error(kerNoNamespaceForPrefix, prefix);
+        if (XmpProperties::ns(prefix).empty())
+            throw Error(kerNoNamespaceForPrefix, prefix);
 
         property_ = property;
         prefix_ = prefix;
-    } // XmpKey::Impl::decomposeKey
+    }  // XmpKey::Impl::decomposeKey
 
     // *************************************************************************
     // free functions

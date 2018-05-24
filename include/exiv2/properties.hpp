@@ -245,7 +245,8 @@ namespace Exiv2 {
     /*!
       @brief Concrete keys for XMP metadata.
      */
-    class EXIV2API XmpKey : public Key {
+    class EXIV2API XmpKey : public Key
+    {
     public:
         //! Shortcut for an %XmpKey auto pointer.
         typedef std::auto_ptr<XmpKey> AutoPtr;
@@ -311,12 +312,12 @@ namespace Exiv2 {
     private:
         // Pimpl idiom
         struct Impl;
-        Impl* p_;
+        std::auto_ptr<Impl> p_;
 
-    }; // class XmpKey
+    };  // class XmpKey
 
-// *****************************************************************************
-// free functions
+    // *****************************************************************************
+    // free functions
 
     //! Output operator for property info
     EXIV2API std::ostream& operator<<(std::ostream& os, const XmpPropertyInfo& propertyInfo);

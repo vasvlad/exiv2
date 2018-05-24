@@ -47,7 +47,7 @@
 
 // stdin handler includes
 #ifndef  _MSC_VER
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdio.h>
 #include <string.h>
 #if defined(__CYGWIN__) || defined(__MINGW__)
@@ -295,6 +295,9 @@ private:
 
     //! Prevent copy-construction: not implemented.
     Params(const Params& rhs);
+
+    //! Destructor, frees any allocated regexes in greps_
+    ~Params();
 
     //! @name Helpers
     //@{

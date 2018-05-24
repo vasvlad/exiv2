@@ -175,7 +175,6 @@ namespace Exiv2 {
 
     Xmpdatum::~Xmpdatum()
     {
-        delete p_;
     }
 
     std::string Xmpdatum::key() const
@@ -483,7 +482,7 @@ namespace Exiv2 {
 
         if ( bURI || bNS ) {
             std::map<std::string,std::string>* p = (std::map<std::string,std::string>*) refCon;
-            std::map<std::string,std::string>& m = (std::map<std::string,std::string>&) *p    ;
+            std::map<std::string,std::string>& m = *p;
 
             std::string b("");
             if ( bNS ) {  // store the NS in dict[""]
